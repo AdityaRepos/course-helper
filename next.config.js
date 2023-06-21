@@ -1,14 +1,4 @@
 /** @type {import('next').NextConfig} */
-//const nextConfig = {}
+const nextConfig = {}
 
-module.exports = {
-    future: {
-      webpack5: true,
-    },
-    target: 'serverless',
-  exportPathMap: function () {
-    return {
-      '/': { page: '/' },
-    };
-  },
-  };
+module.exports = nextConfig
