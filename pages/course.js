@@ -187,7 +187,7 @@ const Course = ({ student }) => {
             </CardContent> :
               <CardContent>
                 <Typography variant="subtitle1" component="span">
-                  Not Available
+                  Not Available, try using for dummy data mth or phy for now.
                 </Typography>
               </CardContent>}
           </Card>
