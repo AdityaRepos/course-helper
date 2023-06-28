@@ -3,7 +3,7 @@
 The Course Helper web application will serve as a centralized platform where students can easily access and share course resources, saving time and effort in locating the necessary materials and assists students and moderators in managing and accessing course-related information. It provides features such as reviews, resource organization, and course search.
 
 ## Usage
-- This is the link to the website I deployed on Vercel -> https://course-helper-pi.vercel.app
+- This is the link to the website I deployed on Vercel -> https://course-helper-iota.vercel.app
 - When you open the link you will be redirected to course helper home page.
 - On homepage, you can search course title
 - On course page, you will see some description, link to previous year grades and below that resources. and in the side some reviews
