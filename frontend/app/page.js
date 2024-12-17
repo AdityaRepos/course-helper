@@ -1,95 +1,101 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+import React, { useState } from "react";
+import { Box, Grid, Button } from "@mui/material";
+import AppBarComponent from "../components/AppBarComponent";
+import CourseCard from "../components/CourseCard";
+import AddCourseDialog from "../components/AddCourseDialog";
+import ViewCourseDialog from "../components/ViewCourseDialog";
 
-export default function Home() {
+export default function LandingPage() {
+  const initialCourses = [
+    {
+      id: 1,
+      name: "Machine Learning",
+      code: "CS771",
+      description: "An advanced course on machine learning algorithms.",
+      credits: 9,
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4sXvAhlZ68GDr_LA9ho4jhOz7-8Mzp7d-pQ&s",
+    },
+    {
+      id: 2,
+      name: "Data Structures",
+      code: "ESO207",
+      description: "Learn about arrays, linked lists, trees, and more.",
+      credits: 11,
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmVeLTyGkk6Cs7HbuWQEMJ8LNsc268Vg-LFw&s",
+    },
+    {
+      id: 3,
+      name: "Fluid Mechanics",
+      code: "ME302",
+      description: "Fundamentals of fluid mechanics and applications.",
+      credits: 9,
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMbIRenGR02WlXYPQAAOxRdKAhIhqcBfS3hQ&s",
+    },
+    {
+      id: 4,
+      name: "Introduction to Electronis",
+      code: "ESO201",
+      description: "Fundamentals of electrical circuits and applications.",
+      credits: 14,
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkcABJGVYyzdY_jy_0oIFEocYC3HoS2nBV6w&s",
+    },
+  ];
+
+  const [courses, setCourses] = useState(initialCourses);
+  const [openAddDialog, setOpenAddDialog] = useState(false);
+  const [selectedCourse, setSelectedCourse] = useState(null);
+
+  const handleAddOpen = () => setOpenAddDialog(true);
+  const handleAddClose = () => setOpenAddDialog(false);
+
+  const handleViewCourse = (course) => setSelectedCourse(course);
+  const handleCloseViewDialog = () => setSelectedCourse(null);
+
+  const handleDeleteCourse = (id) => {
+    setCourses(courses.filter((course) => course.id !== id));
+    setSelectedCourse(null);
+  };
+
+  const handleUpdateCourse = (id, updatedCourse) => {
+    setCourses(courses.map((course) => (course.id === id ? updatedCourse : course)));
+    setSelectedCourse(null);
+  };
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>app/page.js</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <Box>
+      <AppBarComponent title="Course Helper" />
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      <Box sx={{ p: 3 }}>
+        <Grid container spacing={3}>
+          {courses.map((course) => (
+            <Grid item xs={12} sm={6} md={4} key={course.id}>
+              <CourseCard course={course} onClick={() => handleViewCourse(course)} />
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleAddOpen}
+        sx={{ position: "fixed", bottom: 16, left: 16 }}
+      >
+        Add Course
+      </Button>
+
+      <AddCourseDialog open={openAddDialog} onClose={handleAddClose} />
+
+      {selectedCourse && (
+        <ViewCourseDialog
+          open={Boolean(selectedCourse)}
+          course={selectedCourse}
+          onClose={handleCloseViewDialog}
+          onUpdate={handleUpdateCourse}
+          onDelete={handleDeleteCourse}
+        />
+      )}
+    </Box>
   );
 }
