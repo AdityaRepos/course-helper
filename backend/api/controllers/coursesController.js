@@ -1,4 +1,5 @@
 const pool = require("../db/db");
+const { authenticateToken } = require("../middlewares/authMiddleware");
 
 // Get all courses
 const getAllCourses = async (req, res) => {
@@ -62,7 +63,7 @@ const deleteCourse = async (req, res) => {
 
 module.exports = {
   getAllCourses,
-  addCourse,
-  updateCourse,
-  deleteCourse,
+  addCourse: [authenticateToken, addCourse],
+  updateCourse: [authenticateToken, updateCourse],
+  deleteCourse: [authenticateToken, deleteCourse],
 };
