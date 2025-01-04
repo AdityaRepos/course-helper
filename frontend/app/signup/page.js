@@ -29,7 +29,7 @@ export default function SignUpSide() {
   
       try {
         // Call the signup API
-        const response = await axios.post("http://localhost:4000/auth/register", userDetails);
+        const response = await axios.post("https://course-helper-two.vercel.app/auth/register", userDetails);
   
         if (response.status === 201) {
           alert("Signup successful! Redirecting to login...");

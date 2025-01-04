@@ -32,7 +32,7 @@ const ViewCourseDialog = ({ open, onClose, course, onUpdate, onDelete }) => {
     try {
       const token = localStorage.getItem("jwtToken");
       const response = await axios.put(
-        `http://127.0.0.1:4000/courses/${course.id}`,
+        `https://course-helper-two.vercel.app/courses/${course.id}`,
         courseDetails,
         {
           headers: {
@@ -53,7 +53,7 @@ const ViewCourseDialog = ({ open, onClose, course, onUpdate, onDelete }) => {
   const handleDelete = async () => {
     try {
       const token = localStorage.getItem("jwtToken");
-      await axios.delete(`http://127.0.0.1:4000/courses/${course.id}`, {
+      await axios.delete(`https://course-helper-two.vercel.app/courses/${course.id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
