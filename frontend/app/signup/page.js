@@ -13,37 +13,33 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import axios from "axios";
-import { useRouter } from "next/navigation"; // Next.js router for navigation
+import { useRouter } from "next/navigation"; // For client-side navigation in Next.js
 
-export default function LogInSide() {
-  const router = useRouter();
+export default function SignUpSide() {
+    const router = useRouter();
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-
-    const loginDetails = {
-      username: data.get("username"),
-      password: data.get("password"),
-    };
-
-    try {
-      // Make an API call to the login endpoint
-      const response = await axios.post("http://localhost:4000/auth/login", loginDetails);
-
-      if (response.status === 200) {
-        const { token } = response.data;
-        // Save JWT token to localStorage
-        localStorage.setItem("jwtToken", token);
-
-        alert("Login successful! Redirecting...");
-        router.push("/"); // Redirect to homepage
+    const handleSubmit = async (event) => {
+      event.preventDefault();
+      const data = new FormData(event.currentTarget);
+  
+      const userDetails = {
+        username: data.get("username"),
+        password: data.get("password"),
+      };
+  
+      try {
+        // Call the signup API
+        const response = await axios.post("http://localhost:4000/auth/register", userDetails);
+  
+        if (response.status === 201) {
+          alert("Signup successful! Redirecting to login...");
+          router.push("/login"); // Redirect to login page
+        }
+      } catch (error) {
+        console.error("Error during signup:", error.response?.data || error.message);
+        alert("Signup failed. Please try again.");
       }
-    } catch (error) {
-      console.error("Error during login:", error.response?.data || error.message);
-      alert("Login failed. Please check your credentials and try again.");
-    }
-  };
+    };
 
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
@@ -87,7 +83,7 @@ export default function LogInSide() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Login
+            SignUp
           </Typography>
           {/* Form */}
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
@@ -121,12 +117,12 @@ export default function LogInSide() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              LogIn
+              SignUp
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="/signup" variant="body2">
-                {"Don't have an account? Sign Up"}
+                <Link href="/login" variant="body2">
+                {"Already have an account? Sign in"}
                 </Link>
               </Grid>
             </Grid>

@@ -1,50 +1,31 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Grid, Button } from "@mui/material";
+import axios from "axios";
 import AppBarComponent from "../components/AppBarComponent";
 import CourseCard from "../components/CourseCard";
 import AddCourseDialog from "../components/AddCourseDialog";
 import ViewCourseDialog from "../components/ViewCourseDialog";
 
 export default function LandingPage() {
-  const initialCourses = [
-    {
-      id: 1,
-      name: "Machine Learning",
-      code: "CS771",
-      description: "An advanced course on machine learning algorithms.",
-      credits: 9,
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4sXvAhlZ68GDr_LA9ho4jhOz7-8Mzp7d-pQ&s",
-    },
-    {
-      id: 2,
-      name: "Data Structures",
-      code: "ESO207",
-      description: "Learn about arrays, linked lists, trees, and more.",
-      credits: 11,
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmVeLTyGkk6Cs7HbuWQEMJ8LNsc268Vg-LFw&s",
-    },
-    {
-      id: 3,
-      name: "Fluid Mechanics",
-      code: "ME302",
-      description: "Fundamentals of fluid mechanics and applications.",
-      credits: 9,
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMbIRenGR02WlXYPQAAOxRdKAhIhqcBfS3hQ&s",
-    },
-    {
-      id: 4,
-      name: "Introduction to Electronis",
-      code: "ESO201",
-      description: "Fundamentals of electrical circuits and applications.",
-      credits: 14,
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkcABJGVYyzdY_jy_0oIFEocYC3HoS2nBV6w&s",
-    },
-  ];
-
-  const [courses, setCourses] = useState(initialCourses);
+  const [courses, setCourses] = useState([]);
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState(null);
+
+  // Fetch all courses from the backend
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const response = await axios.get("http://127.0.0.1:4000/courses");
+        setCourses(response.data);
+      } catch (error) {
+        console.error("Error fetching courses:", error);
+        alert("Failed to fetch courses. Please try again.");
+      }
+    };
+
+    fetchCourses();
+  }, []);
 
   const handleAddOpen = () => setOpenAddDialog(true);
   const handleAddClose = () => setOpenAddDialog(false);
@@ -60,6 +41,10 @@ export default function LandingPage() {
   const handleUpdateCourse = (id, updatedCourse) => {
     setCourses(courses.map((course) => (course.id === id ? updatedCourse : course)));
     setSelectedCourse(null);
+  };
+
+  const handleAddCourseSuccess = (newCourse) => {
+    setCourses([...courses, newCourse]);
   };
 
   return (
@@ -85,7 +70,7 @@ export default function LandingPage() {
         Add Course
       </Button>
 
-      <AddCourseDialog open={openAddDialog} onClose={handleAddClose} />
+      <AddCourseDialog open={openAddDialog} onClose={handleAddClose} onSuccess={handleAddCourseSuccess} />
 
       {selectedCourse && (
         <ViewCourseDialog

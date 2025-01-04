@@ -13,6 +13,7 @@ const registerUser = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
         await db.query('INSERT INTO myschema.auth (username, password) VALUES ($1, $2)', [username, hashedPassword]);
         res.status(201).json({ message: 'User registered successfully' });
+        console.log('User registered:', username);
     } catch (error) {
         if (error.code === '23505') { // Unique constraint violation
             return res.status(400).json({ message: 'Username already exists' });

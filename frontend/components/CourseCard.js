@@ -13,7 +13,7 @@ const CourseCard = ({ course, onClick }) => {
       <CardContent>
         <Typography variant="h6">{course.name}</Typography>
         <Typography variant="body2">Code: {course.code}</Typography>
-        <Typography variant="body2">Credits: {course.credits}</Typography>
+        <Typography variant="body2">Credits: {course.credit}</Typography>
         <Typography variant="body2">{course.description}</Typography>
       </CardContent>
     </Card>

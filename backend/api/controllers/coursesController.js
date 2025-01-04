@@ -21,6 +21,7 @@ const addCourse = async (req, res) => {
       [name, code, description, credit, image]
     );
     res.status(201).json(result.rows[0]);
+    console.log("Course added:", result.rows[0]);
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ error: "Failed to add course" });
@@ -40,6 +41,7 @@ const updateCourse = async (req, res) => {
       return res.status(404).json({ error: "Course not found" });
     }
     res.status(200).json(result.rows[0]);
+    console.log("Course updated:", result.rows[0]);
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ error: "Failed to update course" });
@@ -55,6 +57,7 @@ const deleteCourse = async (req, res) => {
       return res.status(404).json({ error: "Course not found" });
     }
     res.status(200).json({ message: "Course deleted successfully" });
+    console.log("Course deleted");
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ error: "Failed to delete course" });
